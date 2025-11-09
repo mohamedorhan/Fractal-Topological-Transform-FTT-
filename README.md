@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://raw.githubusercontent.com/mohamedorhan/Fractal-Topological-Transform-FTT-/main/banner_neural_fractal_spectrum.png" width="80%" />
+</p>
+
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17563190.svg)](https://doi.org/10.5281/zenodo.17563190)
 
 # Fractal–Topological Transform (FTT / NEXA)

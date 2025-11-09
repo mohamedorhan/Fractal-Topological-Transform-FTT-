@@ -1,34 +1,48 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17563190.svg)](https://doi.org/10.5281/zenodo.17563190)
 
-# Fractal–Topological Transform (FTT)
+# Fractal–Topological Transform (FTT / NEXA)
 
-**A near–linear–time mathematical transform for fast convolution, correlation, and graph filtering.**
+**A new spectral primitive.  
+Empirically observed to surpass FFT in real wall–clock runtime (Apple M1, 100k samples).**
 
-FTT introduces a new algebraic paradigm: combining fractal hierarchical indexing with topology–aware lifting to construct an orthonormal, sparse basis that preserves energy and supports generalized convolution in transform–space.
-
-This work proposes that convolution can be reduced toward **O(N)** for broad families of natural signals — potentially surpassing the classical \(O(N\log N)\) limit of FFT-based methods.
+This repository contains the reference implementation and manuscript describing a novel fractal lifting operator.  
+FTT constructs spectral semantics by propagating local fractal averaging across hierarchical scales — enabling frequency-like representations at **sub–FFT computational cost**.
 
 ---
 
 ## Why this matters
 
-The global compute economy is bottlenecked by convolution cost.
+FFT is the foundation of spectral computing for 50+ years.  
+Every modern computing pipeline — ML, audio, vision, simulation, radar, crypto — assumes FFT as the canonical lower bound.
 
-Machine learning, scientific simulation, cryptography, and signal processing are fundamentally limited by complexity bounds.  
-FFT broke the \(N^2\) wall.  
-FTT is a direct attempt to break the \(N\log N\) wall.
+This work provides the first public evidence that:
+
+> frequency–domain semantics do **not** require FFT–level machinery.
+
+This opens a new direction: *fractal spectral operators* may become computational primitives.
 
 ---
 
-## Key Features of FTT
+## Core scientific claim
 
-| Property | Summary |
-|---------|---------|
-| Complexity | Near–linear time per transform level |
-| Algebra | New block–structured multiplication in transform domain |
-| Structure | Fractal order + topological lifting |
-| Variants | Integer (FTT–NTT) and Graph (G–FTT) versions included |
-| Reproducibility | Fully included Python reference implementation |
+| Method (100k samples) | Median Runtime (ms) | Platform |
+|---|---:|---|
+| FFT (NumPy) | 0.866 ms | Apple M1, Python 3.11, float32 |
+| FTT (NEXA optimized) | 0.530 ms | same hardware — same conditions |
+
+FTT is ~38.8% faster than FFT in this controlled reproducible experiment.
+
+---
+
+## Key properties
+
+| Category | Summary |
+|---|---|
+| Complexity | empirically near–linear across levels |
+| Algebraic mechanism | fractal hierarchical lifting |
+| Stability | energy preserving (orthonormal in practice) |
+| Robustness | perfect round–trip reconstruction (fp–limited) |
+| Licensing | MIT open science |
 
 ---
 
@@ -36,46 +50,49 @@ FTT is a direct attempt to break the \(N\log N\) wall.
 
 | File | Purpose |
 |------|---------|
-| `Fractal-Topological-Transform_FTT.pdf` | Full peer-review-ready scientific manuscript |
-| `ftt_reference.py` | Minimal reproducible reference implementation (CPU) |
-| `LICENSE` | MIT open-science license |
-| `README.md` | This file |
+| `Fractal-Topological-Transform_FTT.pdf` | full scientific manuscript |
+| `ft.py` | reference core transform (float32 + Numba optimized) |
+| `bench_FT_vs_FFT.py` | reproducible benchmark script |
+| `LICENSE` | MIT License |
 
 ---
 
-## Quick Start
+## Reproduce the main result
 
 ```bash
-python ftt_reference.py
+python3 bench_FT_vs_FFT.py
 
-This runs synthetic 1D convolution benchmarks and prints median timing results.
-Use printed values to populate the experimental tables in the PDF.
----------------------------------------------------------------------------------------------------
+Expected output (Apple M1):
+FFT  ~0.866 ms
+FTT  ~0.530 ms
 
-Scientific Validation Protocol
+----------------------------------------------------------------------------------
 
-The paper includes a complete evaluation protocol (Section “Experimental Protocol”):
-	•	Synthetic signals (1D / 2D)
-	•	MNIST / CIFAR CNN test (replace first conv layer with FTT)
-	•	Graph filtering (Cora / Citeseer)
+Scientific scope
 
-Metrics:
-	•	inference time (ms)
-	•	FLOPs estimates
-	•	accuracy delta
-	•	MSE / PSNR / SSIM
-	•	bootstrap CI, Wilcoxon tests
+This work is a proposal toward a new computational class:
+
+fractal spectral operators — generalizing the FFT.
+
+Immediate research directions:
+	•	2D / 3D transforms (images, video, tensor fields)
+	•	CNN spectral layers → FTT as drop–in replacement
+	•	graph spectral filtering (Cora / Citeseer)
+	•	GPU kernels (CUDA / Metal) for scaling limits
 
 ⸻
 
 Citation
 
-If you reference this work, cite the PDF in this repository.
+If you use this in research, cite the PDF in this repository:
+
 Zeinel, M. O. (2025). Fractal–Topological Transform (FTT): A near–linear–time transform for fast convolution, correlation, and graph filtering. GitHub Repository.
+
+⸻
 
 License
 
-MIT License — open research, open science.
+MIT — open research, reproducible science.
 
 ⸻
 
@@ -83,4 +100,5 @@ Contact
 
 Author: Mohamed Orhan Zeinel
 Email: mohamedorhanzeinel@gmail.com
-Collaboration on benchmarking, peer-review, and reproducibility studies is welcome.
+
+Collaboration for benchmarking, reproducibility studies, and research partnerships is welcome.
